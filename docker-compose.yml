@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: board_postgres
+    environment:
+      POSTGRES_USER: board_user
+      POSTGRES_PASSWORD: board_password
+      POSTGRES_DB: board_db
+    ports:
+    - "5432:5432"
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+volumes:
+  postgres_data:
