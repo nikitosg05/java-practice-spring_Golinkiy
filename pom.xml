@@ -54,6 +54,13 @@
             <artifactId>flyway-core</artifactId>
             <version>${flyway.version}</version>
         </dependency>
+        <!-- Поддержка PostgreSQL для Flyway -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- Поддержка PostgreSQL 16 для Flyway -->
         <dependency>
@@ -84,7 +91,11 @@
             <scope>provided</scope>
         </dependency>
 
+<<<<<<< HEAD
         <!-- Dotenv для .env файлов -->
+=======
+        <!-- Dotenv для .env файлов (ЭТО БЫЛО ПРОПУЩЕНО) -->
+>>>>>>> bc8458f (feat: реализована сущность User, регистрация и авторизация в консоли)
         <dependency>
             <groupId>me.paulschwarz</groupId>
             <artifactId>spring-dotenv</artifactId>
