@@ -18,3 +18,5 @@ target/
 # Временные файлы
 *.tmp
 *.bak
+.env
+*.bak
