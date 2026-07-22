@@ -3,6 +3,7 @@ package com.praktika.board.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class User {
     private String username;
 
     @Column(nullable = false, length = 255)
-    private String password; 
+    private String password;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
@@ -31,16 +32,20 @@ public class User {
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String role; // "USER" или "ADMIN"
+    private Role role;
 
-    @Column(name = "is_blocked", nullable = false)
-    private Boolean isBlocked;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state", nullable = false, length = 20)
+    @Builder.Default
+    private UserState state = UserState.ACTIVE;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }

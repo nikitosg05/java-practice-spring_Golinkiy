@@ -1,6 +1,8 @@
 package com.praktika.board.service;
 
+import com.praktika.board.entity.Role;
 import com.praktika.board.entity.User;
+import com.praktika.board.entity.UserState;
 import com.praktika.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,6 @@ public class UserService {
 
     // Регистрация пользователя
     public User registerUser(String username, String password, String email, String fullName) {
-        // Проверяем, не занят ли логин и почта
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("Пользователь с таким логином уже существует");
         }
@@ -21,29 +22,27 @@ public class UserService {
             throw new RuntimeException("Пользователь с такой почтой уже существует");
         }
 
-        // Создаем пользователя
         User user = User.builder()
                 .username(username)
-                .password(password) 
+                .password(password)
                 .email(email)
                 .fullName(fullName)
-                .role("USER") // user по умолчанию
-                .isBlocked(false) // По умолчанию не заблокирован
+                .role(Role.USER)
+                .state(UserState.ACTIVE)
                 .build();
 
         return userRepository.save(user);
     }
 
-    // Авторизация
+    // Авторизация 
     public User loginUser(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        User user = userRepository.findByUsername(username).orElse(null);
 
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Неверный пароль");
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new RuntimeException("Неверный логин или пароль");
         }
 
-        if (user.getIsBlocked()) {
+        if (user.getState() == UserState.BLOCKED) {
             throw new RuntimeException("Пользователь заблокирован");
         }
 
@@ -55,4 +54,5 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
     }
+}
 }
